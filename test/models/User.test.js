@@ -1,6 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('../../lib/models/User');
+const { hash } = require('../../lib/utils/hash');
 
 describe('User model', () =>{
   const user = new User({
@@ -9,7 +10,7 @@ describe('User model', () =>{
     email: 'feet@shoes.com',
     address: '1919 NW Quimby St., Portland, Or 97209'
   });
-  
+
   it('has a username, email password and address', () => {
     expect(user.toJSON()).toEqual({
       username: 'wookie',
@@ -19,4 +20,7 @@ describe('User model', () =>{
     });
   });
 
+  it('returns with a passwordHash', () => {
+    expect(user._tempPassword).toEqual('goobers');
+  });
 });
