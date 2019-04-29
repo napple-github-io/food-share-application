@@ -6,4 +6,10 @@ describe('jwt', () => {
     const token = tokenize({ username: 'cara', email: 'email@stuff.things' });
     expect(token).toEqual(expect.any(String));
   });
+  
+  it('untokened', () => {
+    const token = tokenize({ username: 'cara', email: 'email@stuff.things' });
+    const untokened = untokenize(token);
+    expect(untokened).toEqual({ username: 'cara', email: 'email@stuff.things' });
+  });
 });

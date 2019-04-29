@@ -1,6 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('../../lib/models/User');
+const { untokenize } = require('../../lib/utils/token');
 
 describe('User model', () =>{
 
@@ -70,5 +71,43 @@ describe('User model', () =>{
       });
   });
 
-
+  it('create an authToken', () => {
+    return User.create({
+      username: 'wookie',
+      password: 'goobers',
+      email: 'feet@shoes.com',
+      address: '1919 NW Quimby St., Portland, Or 97209'
+    })
+      .then(createdUser => {
+        const token = createdUser.authToken();
+        const payload = untokenize(token);
+        expect(payload).toEqual({
+          username: 'wookie',
+          _id: createdUser._id.toString(),
+          email: 'feet@shoes.com',
+          address: '1919 NW Quimby St., Portland, Or 97209'
+        });
+      });
+  });
+  
+  it('finds by token', () => {
+    return User.create({
+      username: 'wookie',
+      password: 'goobers',
+      email: 'feet@shoes.com',
+      address: '1919 NW Quimby St., Portland, Or 97209'
+    })
+      .then(createdUser => {
+        return createdUser.authToken();   
+      })
+      .then(token => User.findByToken(token))
+      .then(results => {
+        expect(results).toEqual({
+          username: 'wookie',
+          email: 'feet@shoes.com',
+          address: '1919 NW Quimby St., Portland, Or 97209',
+          _id: expect.any(String)
+        });
+      });
+  });
 });
