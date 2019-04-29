@@ -43,4 +43,25 @@ describe('auth routes', () => {
         });
       });
   });
+  it('sign in', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .then(() => {
+        return request(app)
+          .post('/api/v1/auth/signin')
+          .send({ username: 'wookie', password: 'goobers' })
+          .then(foundUser => {
+            expect(foundUser.body).toEqual({
+              user: {
+                username: 'wookie',
+                _id: expect.any(String),
+                email: 'feet@shoes.com',
+                address: '1919 NW Quimby St., Portland, Or 97209'
+              }, token: expect.any(String)
+            });
+          });
+      });
+  });
+  
 });
