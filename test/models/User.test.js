@@ -54,4 +54,21 @@ describe('User model', () =>{
         expect(result).toBeTruthy();
       });
   });
+
+  it('compares a good password', () => {
+    return User.create({
+      username: 'wookie',
+      password: 'goobers',
+      email: 'feet@shoes.com',
+      address: '1919 NW Quimby St., Portland, Or 97209'
+    })
+      .then(created => {
+        return created.compare('bananas');
+      })
+      .then(result => {
+        expect(result).toBeFalsy();
+      });
+  });
+
+
 });
