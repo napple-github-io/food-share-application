@@ -39,5 +39,12 @@ describe('Listing Model', () => {
     });
   });
 
-
+  it('requires certain inputs', () => {
+    const listed = new Listing({});
+    const errors = listed.validateSync().errors;
+    expect(errors.title.message).toEqual('Path `title` is required.');
+    expect(errors.user.message).toEqual('Path `user` is required.');
+    expect(errors.location.message).toEqual('Path `location` is required.');  
+    expect(errors.category.message).toEqual('Path `category` is required.');  
+  });
 });
