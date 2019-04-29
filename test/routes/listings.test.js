@@ -68,4 +68,30 @@ describe('auth routes', () => {
           });
       });
   });
+
+  it('gets a list of listings', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .then(createdUser => {
+        return request(app)
+          .post('/api/v1/listings')
+          .send({
+            title: 'carrots',
+            user: createdUser.body.user._id,
+            location: '555 high st.',
+            category: 'produce',
+            dietary: { dairy: true, gluten: true }
+          })
+          .set('Authorization', `Bearer ${createdUser.body.token}`)
+          .then(() => {
+            return request(app)
+              .get('/api/v1/listings')
+              .set('Authorization', `Bearer ${createdUser.body.token}`)
+              .then(list => {
+                expect(list.body).toHaveLength(1);
+              });
+          });
+      });
+  });
 });
