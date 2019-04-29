@@ -43,6 +43,7 @@ describe('auth routes', () => {
         });
       });
   });
+
   it('sign in', () => {
     return request(app)
       .post('/api/v1/auth/signup')
