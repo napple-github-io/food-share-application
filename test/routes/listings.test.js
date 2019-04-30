@@ -29,16 +29,6 @@ describe('auth routes', () => {
     address: '1919 NW Quimby St., Portland, Or 97209'
   };
 
-  // let createdUser = null;
-
-  // const listing = {
-  //   title: 'carrots',
-  //   user: createdUser.body._id,
-  //   location: '555 high st.',
-  //   category: 'produce',
-  //   dietary: { dairy: true, gluten: true }
-  // };
-
   it('creates a listing after user', () => {
     return request(app)
       .post('/api/v1/auth/signup')
@@ -157,6 +147,32 @@ describe('auth routes', () => {
                   _id: expect.any(String),
                   dateListed: expect.any(String)
                 });
+              });
+          });
+      });
+  });
+
+  it('deletes by id', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .then(createdUser => {
+        return request(app)
+          .post('/api/v1/listings')
+          .send({
+            title: 'carrots',
+            user: createdUser.body.user._id,
+            location: '555 high st.',
+            category: 'produce',
+            dietary: { dairy: true, gluten: true }
+          })
+          .set('Authorization', `Bearer ${createdUser.body.token}`)
+          .then(listing => {
+            return request(app)
+              .delete(`/api/v1/listings/${listing.body._id}`)
+              .set('Authorization', `Bearer ${createdUser.body.token}`)
+              .then(deleted => {
+                expect(deleted.body._id).toEqual(listing.body._id);
               });
           });
       });
