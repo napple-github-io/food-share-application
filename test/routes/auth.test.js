@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 describe('auth routes', () => {
   beforeAll(() => {
-    return mongoose.connect('mongodb://localhost:27017/nappletest', {
+    return mongoose.connect('mongodb://localhost:27017/napple', {
       useCreateIndex: true,
       useFindAndModify: false,
       useNewUrlParser: true

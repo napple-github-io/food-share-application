@@ -7,7 +7,7 @@ const User = require('../../lib/models/User');
 
 describe('archive old listings', () => {
   beforeAll(() => {
-    return mongoose.connect('mongodb://localhost:27017/nappletest', {
+    return mongoose.connect('mongodb://localhost:27017/napple', {
       useCreateIndex: true,
       useFindAndModify: false,
       useNewUrlParser: true

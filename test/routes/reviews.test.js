@@ -7,7 +7,7 @@ const moment = require('moment');
 
 describe('review routes', () => {
   beforeAll(() => {
-    return mongoose.connect('mongodb://localhost:27017/nappletest', {
+    return mongoose.connect('mongodb://localhost:27017/napple', {
       useCreateIndex: true,
       useFindAndModify: false,
       useNewUrlParser: true

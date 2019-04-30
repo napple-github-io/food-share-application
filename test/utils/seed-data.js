@@ -43,7 +43,7 @@ module.exports = ({
           nut: chance.bool({ likelihood: 25 })
         },
         postedDate: moment().format('MMMM Do YYYY, h:mm:ss a'),
-        expiration: moment().add(2, 'days').format('MMMM Do YYYY, h:mm:ss a')
+        expiration: moment().add(10, 'seconds').format('MMMM Do YYYY, h:mm:ss a')
       }));
       return Promise.all([
         Listing.create(listings),
