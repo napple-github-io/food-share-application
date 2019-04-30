@@ -4,7 +4,7 @@ const app = require('../../lib/app');
 const User = require('../../lib/models/User');
 const mongoose = require('mongoose');
 
-describe('auth routes', () => {
+describe('review routes', () => {
   beforeAll(() => {
     return mongoose.connect('mongodb://localhost:27017/nappletest', {
       useCreateIndex: true,

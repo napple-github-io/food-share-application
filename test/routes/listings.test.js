@@ -3,7 +3,7 @@ const request = require('supertest');
 const app = require('../../lib/app');
 const mongoose = require('mongoose');
 
-describe('auth routes', () => {
+describe('listings routes', () => {
 
   beforeAll(() => {
     return mongoose.connect('mongodb://localhost:27017/nappletest', {
@@ -177,4 +177,31 @@ describe('auth routes', () => {
           });
       });
   });
+
+  it('rejects attempt to patch expiration', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .then(createdUser => {
+        return request(app)
+          .post('/api/v1/listings')
+          .send({
+            title: 'carrots',
+            user: createdUser.body.user._id,
+            location: '555 high st.',
+            category: 'produce',
+            dietary: { dairy: true, gluten: true }
+          })
+          .set('Authorization', `Bearer ${createdUser.body.token}`)
+          .then(listing => {
+            return request(app)
+              .patch(`/api/v1/listings/${listing.body._id}`)
+              .set('Authorization', `Bearer ${createdUser.body.token}`)
+              .send({ expiration: 'should reject'})
+              .then(listing => {
+                expect(listing.body.error).toEqual('Cannot adjust expiration date');
+              });
+          });
+      });
+  })
 });
