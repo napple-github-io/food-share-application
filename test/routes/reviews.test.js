@@ -57,7 +57,7 @@ describe('auth routes', () => {
       });
   });
 
-  it('gets a review by id', () => {
+  it('updates a review by id', () => {
     return Promise.all([
       User.create(user),
       User.create(user)
@@ -85,6 +85,30 @@ describe('auth routes', () => {
                   createdAt: expect.any(String),
                   updatedAt: expect.any(String)
                 });
+              });
+          });
+      });
+  });
+
+  it('deletes a review by id', () => {
+    return Promise.all([
+      User.create(user),
+      User.create(user)
+    ])
+      .then(([reviewer, reviewee]) => {
+        return request(app)
+          .post('/api/v1/reviews')
+          .send({
+            reviewer: reviewer._id,
+            reviewee: reviewee._id,
+            reviewText: 'I am in love with this person',
+            good: true
+          })
+          .then(createdReview => {
+            return request(app)
+              .delete(`/api/v1/reviews/${createdReview.body._id}`)
+              .then(res => {
+                expect(res.body).toEqual({ _id: expect.any(String) });
               });
           });
       });
