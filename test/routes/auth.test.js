@@ -4,7 +4,6 @@ const app = require('../../lib/app');
 const mongoose = require('mongoose');
 
 describe('auth routes', () => {
-
   beforeAll(() => {
     return mongoose.connect('mongodb://localhost:27017/nappletest', {
       useCreateIndex: true,
