@@ -5,9 +5,9 @@ const Listing = require('../../lib/models/Listing');
 const moment = require('moment');
 
 module.exports = ({
-  userCount = 20,
-  reviewCount = 30,
-  listingsCount = 50
+  userCount = 50,
+  reviewCount = 10,
+  listingsCount = 200
 } = {}) => {
   const users = [...Array(userCount)].map(() => ({
     username: chance.word({ syllables: 3 }),
