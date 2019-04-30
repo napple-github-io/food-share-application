@@ -94,4 +94,71 @@ describe('auth routes', () => {
           });
       });
   });
+
+  it('gets by id', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .then(createdUser => {
+        return request(app)
+          .post('/api/v1/listings')
+          .send({
+            title: 'carrots',
+            user: createdUser.body.user._id,
+            location: '555 high st.',
+            category: 'produce',
+            dietary: { dairy: true, gluten: true }
+          })
+          .set('Authorization', `Bearer ${createdUser.body.token}`)
+          .then(listing => {
+            return request(app)
+              .get(`/api/v1/listings/${listing.body._id}`)
+              .set('Authorization', `Bearer ${createdUser.body.token}`)
+              .then(listing => {
+                expect(listing.body).toEqual({
+                  title: 'carrots',
+                  user: createdUser.body.user._id,
+                  category: 'produce',
+                  dietary: { dairy: true, gluten: true },
+                  _id: expect.any(String),
+                  dateListed: expect.any(String)
+                });
+              });
+          });
+      });
+  });
+
+  it('patches by id', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .then(createdUser => {
+        return request(app)
+          .post('/api/v1/listings')
+          .send({
+            title: 'carrots',
+            user: createdUser.body.user._id,
+            location: '555 high st.',
+            category: 'produce',
+            dietary: { dairy: true, gluten: true }
+          })
+          .set('Authorization', `Bearer ${createdUser.body.token}`)
+          .then(listing => {
+            return request(app)
+              .patch(`/api/v1/listings/${listing.body._id}`)
+              .set('Authorization', `Bearer ${createdUser.body.token}`)
+              .send({ title: 'ham', dietary: { dairy: false, gluten: true }, category: 'meat' })
+              .then(listing => {
+                expect(listing.body).toEqual({
+                  title: 'ham',
+                  user: createdUser.body.user._id,
+                  category: 'meat',
+                  dietary: { dairy: false, gluten: true },
+                  _id: expect.any(String),
+                  dateListed: expect.any(String)
+                });
+              });
+          });
+      });
+  });
 });
