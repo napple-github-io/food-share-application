@@ -4,7 +4,6 @@ const User = require('../../lib/models/User');
 const { untokenize } = require('../../lib/utils/token');
 
 describe('User model', () =>{
-
   beforeAll(() => {
     return mongoose.connect('mongodb://localhost:27017/napple', {
       useCreateIndex: true,
