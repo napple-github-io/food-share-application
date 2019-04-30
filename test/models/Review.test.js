@@ -2,8 +2,6 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const Review = require('../../lib/models/Review');
 
-
-
 describe('Review Model', () => {
   beforeAll(() => {
     return mongoose.connect('mongodb://localhost:27017/napple', {
