@@ -13,7 +13,10 @@ module.exports = ({
     username: chance.word({ syllables: 3 }),
     password: chance.word({ syllables: 2 }),
     email: chance.email(),
-    address: chance.address(),
+    location: {
+      address: chance.address(),
+      zip: chance.zip()
+    },
     role: 'User'
   }));
 
@@ -31,7 +34,10 @@ module.exports = ({
         title: chance.word({ syllables: 3 }),
         user: chance.pickone(createdUsers)._id,
         description: chance.sentence(),
-        location: chance.address(),
+        location:{
+          address: chance.address(),
+          zip: chance.zip()
+        },
         archived: false,
         category: chance.pickone(['canned goods', 'produce', 'dairy', 'eggs', 'meat', 'seafood', 'cooked foods', 'garden', 'pantry staples', 'herbs', 'boxed goods', 'spices', 'beverages']),
         dietary: {
