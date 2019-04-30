@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Review = require('../../lib/models/Review');
 
 
+
 describe('Review Model', () => {
   beforeAll(() => {
     return mongoose.connect('mongodb://localhost:27017/napple', {
@@ -35,6 +36,7 @@ describe('Review Model', () => {
       reviewee: id,
       reviewText: 'super punctual',
       good: true,
+      postedDate: expect.any(String),
       _id: expect.any(mongoose.Types.ObjectId)
     });
   });

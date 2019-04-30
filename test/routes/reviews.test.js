@@ -3,6 +3,7 @@ const request = require('supertest');
 const app = require('../../lib/app');
 const User = require('../../lib/models/User');
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 describe('review routes', () => {
   beforeAll(() => {
@@ -50,8 +51,7 @@ describe('review routes', () => {
               reviewText: 'I am in love with this person',
               good: true,
               _id: expect.any(String),
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String)
+              postedDate: expect.any(String)
             });
           });
       });
@@ -82,8 +82,7 @@ describe('review routes', () => {
                   reviewText: 'I do not love them anymore',
                   good: false,
                   _id: expect.any(String),
-                  createdAt: expect.any(String),
-                  updatedAt: expect.any(String)
+                  postedDate: expect.any(String),
                 });
               });
           });

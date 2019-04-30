@@ -35,7 +35,9 @@ describe('Listing Model', () => {
       location: '555 high st.',
       category: 'produce',
       dietary: { dairy: true, gluten: true },
-      dateListed: expect.any(Date),
+      postedDate: expect.any(String),
+      expiration: expect.any(String),
+      archived: false
     });
   });
 

@@ -3,6 +3,7 @@ const request = require('supertest');
 const app = require('../../lib/app');
 const mongoose = require('mongoose');
 
+
 describe('listings routes', () => {
 
   beforeAll(() => {
@@ -52,7 +53,9 @@ describe('listings routes', () => {
               category: 'produce',
               dietary: { dairy: true, gluten: true },
               _id: expect.any(String),
-              dateListed: expect.any(String),
+              postedDate: expect.any(String),
+              expiration: expect.any(String),
+              archived: false,
               __v: 0
             });
           });
@@ -111,7 +114,9 @@ describe('listings routes', () => {
                   category: 'produce',
                   dietary: { dairy: true, gluten: true },
                   _id: expect.any(String),
-                  dateListed: expect.any(String)
+                  postedDate: expect.any(String),
+                  expiration: expect.any(String),
+                  archived: false
                 });
               });
           });
@@ -145,7 +150,9 @@ describe('listings routes', () => {
                   category: 'meat',
                   dietary: { dairy: false, gluten: true },
                   _id: expect.any(String),
-                  dateListed: expect.any(String)
+                  postedDate: expect.any(String),
+                  expiration: expect.any(String),
+                  archived: false
                 });
               });
           });
