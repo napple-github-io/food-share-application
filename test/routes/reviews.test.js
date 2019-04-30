@@ -26,7 +26,7 @@ describe('review routes', () => {
     password: 'goobers',
     role: 'User',
     email: 'feet@shoes.com',
-    address: '1919 NW Quimby St., Portland, Or 97209'
+    location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' }
   };
 
   it('creates a review', () => {

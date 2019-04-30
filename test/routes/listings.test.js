@@ -178,6 +178,7 @@ describe('listings routes', () => {
               .set('Authorization', `Bearer ${createdUser.body.token}`)
               .then(deleted => {
                 expect(deleted.body._id).toEqual(listing.body._id);
+                expect(deleted.body.archived).toEqual(true);
               });
           });
       });
@@ -201,11 +202,11 @@ describe('listings routes', () => {
             return request(app)
               .patch(`/api/v1/listings/${listing.body._id}`)
               .set('Authorization', `Bearer ${createdUser.body.token}`)
-              .send({ expiration: 'should reject'})
+              .send({ expiration: 'should reject' })
               .then(listing => {
                 expect(listing.body.error).toEqual('Cannot adjust expiration date');
               });
           });
       });
-  })
+  });
 });
