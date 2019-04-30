@@ -56,4 +56,37 @@ describe('auth routes', () => {
           });
       });
   });
+
+  it('gets a review by id', () => {
+    return Promise.all([
+      User.create(user),
+      User.create(user)
+    ])
+      .then(([reviewer, reviewee]) => {
+        return request(app)
+          .post('/api/v1/reviews')
+          .send({
+            reviewer: reviewer._id,
+            reviewee: reviewee._id,
+            reviewText: 'I am in love with this person',
+            good: true
+          })
+          .then(createdReview => {
+            return request(app)
+              .patch(`/api/v1/reviews/${createdReview.body._id}`)
+              .send({ reviewText: 'I do not love them anymore', good: false })
+              .then(updated => {
+                expect(updated.body).toEqual({
+                  reviewer: expect.any(String),
+                  reviewee: expect.any(String),
+                  reviewText: 'I do not love them anymore',
+                  good: false,
+                  _id: expect.any(String),
+                  createdAt: expect.any(String),
+                  updatedAt: expect.any(String)
+                });
+              });
+          });
+      });
+  });
 });
