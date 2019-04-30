@@ -3,7 +3,6 @@ const request = require('supertest');
 const app = require('../../lib/app');
 const User = require('../../lib/models/User');
 const mongoose = require('mongoose');
-const moment = require('moment');
 
 describe('review routes', () => {
   beforeAll(() => {

@@ -25,7 +25,7 @@ describe('User model', () =>{
     username: 'wookie',
     password: 'goobers',
     email: 'feet@shoes.com',
-    address: '1919 NW Quimby St., Portland, Or 97209',
+    location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
     role: 'User'
   });
 
@@ -33,7 +33,7 @@ describe('User model', () =>{
     expect(user.toJSON()).toEqual({
       username: 'wookie',
       email: 'feet@shoes.com',
-      address: '1919 NW Quimby St., Portland, Or 97209',
+      location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
       role: 'User',
       _id: expect.any(mongoose.Types.ObjectId)
     });
@@ -48,7 +48,7 @@ describe('User model', () =>{
       username: 'wookie',
       password: 'goobers',
       email: 'feet@shoes.com',
-      address: '1919 NW Quimby St., Portland, Or 97209',
+      location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
       role: 'User'
     })
       .then(created => {
@@ -64,7 +64,7 @@ describe('User model', () =>{
       username: 'wookie',
       password: 'goobers',
       email: 'feet@shoes.com',
-      address: '1919 NW Quimby St., Portland, Or 97209',
+      location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
       role: 'User'
     })
       .then(created => {
@@ -80,7 +80,7 @@ describe('User model', () =>{
       username: 'wookie',
       password: 'goobers',
       email: 'feet@shoes.com',
-      address: '1919 NW Quimby St., Portland, Or 97209',
+      location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
       role: 'User'
     })
       .then(createdUser => {
@@ -90,7 +90,7 @@ describe('User model', () =>{
           username: 'wookie',
           _id: createdUser._id.toString(),
           email: 'feet@shoes.com',
-          address: '1919 NW Quimby St., Portland, Or 97209',
+          location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
           role: 'User'
         });
       });
@@ -101,7 +101,7 @@ describe('User model', () =>{
       username: 'wookie',
       password: 'goobers',
       email: 'feet@shoes.com',
-      address: '1919 NW Quimby St., Portland, Or 97209',
+      location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
       role: 'User'
     })
       .then(createdUser => {
@@ -112,7 +112,7 @@ describe('User model', () =>{
         expect(results).toEqual({
           username: 'wookie',
           email: 'feet@shoes.com',
-          address: '1919 NW Quimby St., Portland, Or 97209',
+          location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
           role: 'User',
           _id: expect.any(String)
         });

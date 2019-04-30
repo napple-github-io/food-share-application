@@ -22,7 +22,10 @@ describe('Listing Model', () => {
   const listing = new Listing({
     title: 'carrots',
     user: new mongoose.Types.ObjectId(),
-    location: '555 high st.',
+    location: {
+      address: '555 high st.',
+      zip: '555'
+    },
     category: 'produce',
     dietary: { dairy: true, gluten: true }
   });
@@ -32,7 +35,10 @@ describe('Listing Model', () => {
       title: 'carrots',
       _id: expect.any(mongoose.Types.ObjectId),
       user: expect.any(mongoose.Types.ObjectId),
-      location: '555 high st.',
+      location: {
+        address: '555 high st.',
+        zip: '555'
+      },
       category: 'produce',
       dietary: { dairy: true, gluten: true },
       postedDate: expect.any(String),
@@ -46,7 +52,6 @@ describe('Listing Model', () => {
     const errors = listed.validateSync().errors;
     expect(errors.title.message).toEqual('Path `title` is required.');
     expect(errors.user.message).toEqual('Path `user` is required.');
-    expect(errors.location.message).toEqual('Path `location` is required.');  
     expect(errors.category.message).toEqual('Path `category` is required.');  
   });
 });

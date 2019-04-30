@@ -25,7 +25,7 @@ describe('auth routes', () => {
     password: 'goobers',
     role: 'User',
     email: 'feet@shoes.com',
-    address: '1919 NW Quimby St., Portland, Or 97209'
+    location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' }
   };
 
   it('signs up a user', () => {
@@ -38,7 +38,7 @@ describe('auth routes', () => {
             username: 'wookie',
             _id: expect.any(String),
             email: 'feet@shoes.com',
-            address: '1919 NW Quimby St., Portland, Or 97209',
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
             role: 'User'
           }, token: expect.any(String)
         });
@@ -59,7 +59,7 @@ describe('auth routes', () => {
                 username: 'wookie',
                 _id: expect.any(String),
                 email: 'feet@shoes.com',
-                address: '1919 NW Quimby St., Portland, Or 97209',
+                location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
                 role: 'User'
               }, token: expect.any(String)
             });
@@ -75,11 +75,11 @@ describe('auth routes', () => {
         return request(app)
           .patch(`/api/v1/auth/${createdUser.body.user._id}`)
           .set('Authorization', `Bearer ${createdUser.body.token}`)
-          .send({ email: 'poop@poop.com', password: 'newpw', address: '555 high street, eugene, Or 97362' })
+          .send({ email: 'poop@poop.com', password: 'newpw', location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' } })
           .then(res => {
             expect(res.body).toEqual({
               email: 'poop@poop.com', 
-              address: '555 high street, eugene, Or 97362',
+              location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
               username: 'wookie',
               role: 'User'
             });
