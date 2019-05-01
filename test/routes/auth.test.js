@@ -2,6 +2,7 @@ require('dotenv').config();
 const request = require('supertest');
 const app = require('../../lib/app');
 const mongoose = require('mongoose');
+const seed = require('../utils/seed-data');
 
 describe('auth routes', () => {
   beforeAll(() => {
@@ -99,6 +100,15 @@ describe('auth routes', () => {
           .then(deleted => expect(deleted.body).toEqual({ _id: expect.any(String) }));
       });
   });
-  //when a user is deleted,
-  //all listings that refer to it are ---ARCHIVED---
+
+  it('shows power users', () => {
+    return seed()
+      .then(() => {
+        return request(app)
+          .get('/api/v1/auth/power')
+          .then(result => {
+            expect(result.body[0].count).toBeGreaterThanOrEqual(result.body[2].count);
+          });
+      });      
+  });
 });
