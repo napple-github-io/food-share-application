@@ -3,7 +3,6 @@ const request = require('supertest');
 const app = require('../../lib/app');
 const mongoose = require('mongoose');
 const seedData = require('../utils/seed-data');
-const Listing = require('../../lib/models/Listing');
 
 describe('listings routes', () => {
 
