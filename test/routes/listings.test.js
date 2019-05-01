@@ -230,6 +230,32 @@ describe('listings routes', () => {
           })
           .then(response => {
             expect(response.body).toHaveLength(1);
+            expect(response.body[0].user).toEqual(createdUser.body.user._id);
+          });
+      });
+  });
+
+  it('gets the listings of a specific zipcode', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .then(createdUser => {
+        return request(app)
+          .post('/api/v1/listings')
+          .send({
+            title: 'carrots',
+            user: createdUser.body.user._id,
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97200' },            category: 'produce',
+            dietary: { dairy: true, gluten: true }
+          })
+          .set('Authorization', `Bearer ${createdUser.body.token}`)
+          .then(createdListing => {
+            return request(app)
+              .get(`/api/v1/listings/zip/${createdListing.body.location.zip}`);
+          })
+          .then(response => {
+            expect(response.body).toHaveLength(1);
+            expect(response.body[0].location.zip).toEqual('97200');
           });
       });
   });
