@@ -113,4 +113,23 @@ describe('auth routes', () => {
           });
       });      
   });
+
+  it('gets another user by ID', () => {
+    return Promise.all([
+      request(app)
+        .post('/api/v1/auth/signup')
+        .send(user),
+      request(app)
+        .post('/api/v1/auth/signup')
+        .send(user)
+    ])
+      .then(([userOther, userMe]) => {
+        return request(app)
+          .get(`/api/v1/auth/usersearch/${userOther.body.user._id}`)
+          .set('Authorization', `Bearer ${userMe.body.token}`)
+          .then(res => {
+            expect(res.body._id).toEqual(userOther.body.user._id);
+          });
+      });
+  });
 });
