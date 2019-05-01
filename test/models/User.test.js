@@ -35,6 +35,7 @@ describe('User model', () =>{
       email: 'feet@shoes.com',
       location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
       role: 'User',
+      powerUser: false,
       _id: expect.any(mongoose.Types.ObjectId)
     });
   });
@@ -49,7 +50,8 @@ describe('User model', () =>{
       password: 'goobers',
       email: 'feet@shoes.com',
       location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
-      role: 'User'
+      role: 'User',
+
     })
       .then(created => {
         return created.compare('goobers');
@@ -91,7 +93,8 @@ describe('User model', () =>{
           _id: createdUser._id.toString(),
           email: 'feet@shoes.com',
           location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
-          role: 'User'
+          role: 'User',
+          powerUser: false
         });
       });
   });
@@ -114,7 +117,8 @@ describe('User model', () =>{
           email: 'feet@shoes.com',
           location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
           role: 'User',
-          _id: expect.any(String)
+          _id: expect.any(String),
+          powerUser: false
         });
       });
   });

@@ -2,6 +2,7 @@ require('dotenv').config();
 const request = require('supertest');
 const app = require('../../lib/app');
 const mongoose = require('mongoose');
+const seed = require('../utils/seed-data');
 
 describe('auth routes', () => {
   beforeAll(() => {
@@ -39,7 +40,8 @@ describe('auth routes', () => {
             _id: expect.any(String),
             email: 'feet@shoes.com',
             location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
-            role: 'User'
+            role: 'User',
+            powerUser: false
           }, token: expect.any(String)
         });
       });
@@ -59,6 +61,7 @@ describe('auth routes', () => {
                 username: 'wookie',
                 _id: expect.any(String),
                 email: 'feet@shoes.com',
+                powerUser: false,
                 location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
                 role: 'User'
               }, token: expect.any(String)
@@ -81,7 +84,8 @@ describe('auth routes', () => {
               email: 'poop@poop.com', 
               location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
               username: 'wookie',
-              role: 'User'
+              role: 'User',
+              powerUser: false
             });
           });
       });
@@ -99,6 +103,15 @@ describe('auth routes', () => {
           .then(deleted => expect(deleted.body).toEqual({ _id: expect.any(String) }));
       });
   });
-  //when a user is deleted,
-  //all listings that refer to it are ---ARCHIVED---
+
+  it('shows power users', () => {
+    return seed()
+      .then(() => {
+        return request(app)
+          .get('/api/v1/auth/power')
+          .then(result => {
+            expect(result.body[0].count).toBeGreaterThanOrEqual(result.body[2].count);
+          });
+      });      
+  });
 });

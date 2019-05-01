@@ -210,6 +210,93 @@ describe('listings routes', () => {
       });
   });
 
-  
+
+  it('gets the listings of a single user', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .then(createdUser => {
+        return request(app)
+          .post('/api/v1/listings')
+          .send({
+            title: 'carrots',
+            user: createdUser.body.user._id,
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },            category: 'produce',
+            dietary: { dairy: true, gluten: true }
+          })
+          .set('Authorization', `Bearer ${createdUser.body.token}`)
+          .then(() => {
+            return request(app)
+              .get(`/api/v1/listings/user/${createdUser.body.user._id}`);
+          })
+          .then(response => {
+            expect(response.body).toHaveLength(1);
+            expect(response.body[0].user).toEqual(createdUser.body.user._id);
+          });
+      });
+  });
+
+  it('gets the listings of a specific zipcode', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .then(createdUser => {
+        return request(app)
+          .post('/api/v1/listings')
+          .send({
+            title: 'carrots',
+            user: createdUser.body.user._id,
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97200' },            category: 'produce',
+            dietary: { dairy: true, gluten: true }
+          })
+          .set('Authorization', `Bearer ${createdUser.body.token}`)
+          .then(createdListing => {
+            return request(app)
+              .get(`/api/v1/listings/zip/${createdListing.body.location.zip}`);
+          })
+          .then(response => {
+            expect(response.body).toHaveLength(1);
+            expect(response.body[0].location.zip).toEqual('97200');
+          });
+      });
+  });
+
+  it('returns listings within a certain radius', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .then(createdUser => {
+        return request(app)
+          .post('/api/v1/listings')
+          .send({
+            title: 'carrots',
+            user: createdUser.body.user._id,
+            location: { address: '915 SE 35th Ave., Portland, Or', zip: '97214' },
+            category: 'produce',
+            dietary: { dairy: true, gluten: true }
+          })
+          .set('Authorization', `Bearer ${createdUser.body.token}`)
+          .then(() => {
+            return request(app)
+              .get('/api/v1/listings/close')
+              .set('Authorization', `Bearer ${createdUser.body.token}`)
+              .then(res => {
+                expect(res.body).toEqual([
+                  { __v: 0,
+                    _id: expect.any(String),
+                    archived: false,
+                    category: 'produce',
+                    dietary: { dairy: true, gluten: true },
+                    expiration: expect.any(String),
+                    location: { 'address': '915 SE 35th Ave., Portland, Or', 'zip': '97214' },
+                    postedDate: expect.any(String),
+                    title: 'carrots',
+                    user: expect.any(String)
+                  }
+                ]);
+              });
+          });
+      });
+  });
 
 });
