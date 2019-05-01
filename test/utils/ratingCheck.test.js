@@ -2,10 +2,10 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const seedData = require('../utils/seed-data');
 const powerCheck = require('../../lib/utils/powerCheck');
-const User = require('../../lib/models/User');
+const Review = require('../../lib/models/Review');
 
 
-describe('archive old listings', () => {
+describe('Check user rating', () => {
   beforeAll(() => {
     return mongoose.connect('mongodb://localhost:27017/napple', {
       useCreateIndex: true,
@@ -22,14 +22,14 @@ describe('archive old listings', () => {
     return mongoose.connection.close();
   });
 
-  it('checks power users', () => {
-    return seedData()
-      .then(() => {
-        return powerCheck()
-          .then(() => {
-            return User
-              .find();
-          });
-      });
-  });
+  // it('archives old listings', () => {
+  //   return seedData()
+  //     .then(() => {
+  //       return powerCheck()
+  //         .then(() => {
+  //           return User
+  //             .find();
+  //         });
+  //     });
+  // });
 });

@@ -10,6 +10,7 @@ app.listen(PORT, () => {
   setInterval(() => {
     archive();
     powerCheck();
+    //ratingCheck();
   }, (1000 * 60 * 60));
   // eslint-disable-next-line no-console
   console.log(`LISTENING on ${PORT}`);

@@ -156,4 +156,7 @@ describe('review routes', () => {
           });
       });
   });
+  it('display a user rating', () => {
+
+  });
 });
