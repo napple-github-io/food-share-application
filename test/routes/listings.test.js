@@ -299,20 +299,15 @@ describe('listings routes', () => {
           });
       });
   });
-  // it('obtains all listings by zipcode', () => {
-  //   return seedData()
-  //     .then(() => {
-  //       return Listing
-  //         .findOne()
-  //         .then(foundListing => {
-  //           console.log(foundListing.location.zip);
-  //           return request(app)
-  //             .get(`/api/v1/listings/zip/${foundListing.location.zip}`)
-  //             .then(zipResponse => {
-  //               expect(zipResponse).toEqual('');
-  //             });
-  //         });
-  //     });
-  // });
-
+  it('displays hotzips', () => {
+    return seedData()
+      .then(() => {
+        return request(app)
+          .get('/api/v1/listings/hotzips')
+          .then(zipResponse => {
+            expect(zipResponse.body).toEqual(expect.any(Array));
+          });
+      });
+  });
 });
+
