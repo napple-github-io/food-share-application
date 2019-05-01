@@ -5,7 +5,7 @@ const powerCheck = require('../../lib/utils/powerCheck');
 const User = require('../../lib/models/User');
 
 
-describe('archive old listings', () => {
+describe('Powercheck', () => {
   beforeAll(() => {
     return mongoose.connect('mongodb://localhost:27017/napple', {
       useCreateIndex: true,
