@@ -27,7 +27,10 @@ describe('listings routes', () => {
     password: 'goobers',
     role: 'User',
     email: 'feet@shoes.com',
-    address: '1919 NW Quimby St., Portland, Or 97209'
+    location: {
+      address: '1919 NW Quimby St., Portland, Or',
+      zip: '97209'
+    }
   };
 
   it('creates a listing after user', () => {
@@ -40,7 +43,7 @@ describe('listings routes', () => {
           .send({
             title: 'carrots',
             user: createdUser.body.user._id,
-            location: '555 high st.',
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
             category: 'produce',
             dietary: { dairy: true, gluten: true }
           })
@@ -49,8 +52,7 @@ describe('listings routes', () => {
             expect(posted.body).toEqual({
               title: 'carrots',
               user: expect.any(String),
-              location: '555 high st.',
-              category: 'produce',
+              location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },              category: 'produce',
               dietary: { dairy: true, gluten: true },
               _id: expect.any(String),
               postedDate: expect.any(String),
@@ -72,8 +74,7 @@ describe('listings routes', () => {
           .send({
             title: 'carrots',
             user: createdUser.body.user._id,
-            location: '555 high st.',
-            category: 'produce',
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },            category: 'produce',
             dietary: { dairy: true, gluten: true }
           })
           .set('Authorization', `Bearer ${createdUser.body.token}`)
@@ -98,8 +99,7 @@ describe('listings routes', () => {
           .send({
             title: 'carrots',
             user: createdUser.body.user._id,
-            location: '555 high st.',
-            category: 'produce',
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },            category: 'produce',
             dietary: { dairy: true, gluten: true }
           })
           .set('Authorization', `Bearer ${createdUser.body.token}`)
@@ -133,8 +133,7 @@ describe('listings routes', () => {
           .send({
             title: 'carrots',
             user: createdUser.body.user._id,
-            location: '555 high st.',
-            category: 'produce',
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },            category: 'produce',
             dietary: { dairy: true, gluten: true }
           })
           .set('Authorization', `Bearer ${createdUser.body.token}`)
@@ -169,8 +168,7 @@ describe('listings routes', () => {
           .send({
             title: 'carrots',
             user: createdUser.body.user._id,
-            location: '555 high st.',
-            category: 'produce',
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },            category: 'produce',
             dietary: { dairy: true, gluten: true }
           })
           .set('Authorization', `Bearer ${createdUser.body.token}`)
@@ -180,6 +178,7 @@ describe('listings routes', () => {
               .set('Authorization', `Bearer ${createdUser.body.token}`)
               .then(deleted => {
                 expect(deleted.body._id).toEqual(listing.body._id);
+                expect(deleted.body.archived).toEqual(true);
               });
           });
       });
@@ -195,8 +194,7 @@ describe('listings routes', () => {
           .send({
             title: 'carrots',
             user: createdUser.body.user._id,
-            location: '555 high st.',
-            category: 'produce',
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },            category: 'produce',
             dietary: { dairy: true, gluten: true }
           })
           .set('Authorization', `Bearer ${createdUser.body.token}`)
@@ -204,11 +202,11 @@ describe('listings routes', () => {
             return request(app)
               .patch(`/api/v1/listings/${listing.body._id}`)
               .set('Authorization', `Bearer ${createdUser.body.token}`)
-              .send({ expiration: 'should reject'})
+              .send({ expiration: 'should reject' })
               .then(listing => {
                 expect(listing.body.error).toEqual('Cannot adjust expiration date');
               });
           });
       });
-  })
+  });
 });

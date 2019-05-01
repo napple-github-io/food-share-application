@@ -3,7 +3,6 @@ const request = require('supertest');
 const app = require('../../lib/app');
 const User = require('../../lib/models/User');
 const mongoose = require('mongoose');
-const moment = require('moment');
 
 describe('review routes', () => {
   beforeAll(() => {
@@ -27,23 +26,28 @@ describe('review routes', () => {
     password: 'goobers',
     role: 'User',
     email: 'feet@shoes.com',
-    address: '1919 NW Quimby St., Portland, Or 97209'
+    location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' }
   };
 
   it('creates a review', () => {
     return Promise.all([
-      User.create(user),
-      User.create(user)
+      request(app)
+        .post('/api/v1/auth/signup')
+        .send(user),
+      request(app)
+        .post('/api/v1/auth/signup')
+        .send(user)
     ])
       .then(([reviewer, reviewee]) => {
         return request(app)
           .post('/api/v1/reviews')
           .send({
-            reviewer: reviewer._id,
-            reviewee: reviewee._id,
+            reviewer: reviewer.body.user._id,
+            reviewee: reviewee.body.user._id,
             reviewText: 'I am in love with this person',
             good: true
           })
+          .set('Authorization', `Bearer ${reviewer.body.token}`)
           .then(res => {
             expect(res.body).toEqual({
               reviewer: expect.any(String),
@@ -59,15 +63,20 @@ describe('review routes', () => {
 
   it('updates a review by id', () => {
     return Promise.all([
-      User.create(user),
-      User.create(user)
+      request(app)
+        .post('/api/v1/auth/signup')
+        .send(user),
+      request(app)
+        .post('/api/v1/auth/signup')
+        .send(user)
     ])
       .then(([reviewer, reviewee]) => {
         return request(app)
           .post('/api/v1/reviews')
+          .set('Authorization', `Bearer ${reviewer.body.token}`)
           .send({
-            reviewer: reviewer._id,
-            reviewee: reviewee._id,
+            reviewer: reviewer.body.user._id,
+            reviewee: reviewee.body.user._id,
             reviewText: 'I am in love with this person',
             good: true
           })
@@ -75,6 +84,7 @@ describe('review routes', () => {
             return request(app)
               .patch(`/api/v1/reviews/${createdReview.body._id}`)
               .send({ reviewText: 'I do not love them anymore', good: false })
+              .set('Authorization', `Bearer ${reviewer.body.token}`)
               .then(updated => {
                 expect(updated.body).toEqual({
                   reviewer: expect.any(String),
@@ -91,21 +101,27 @@ describe('review routes', () => {
 
   it('deletes a review by id', () => {
     return Promise.all([
-      User.create(user),
-      User.create(user)
+      request(app)
+        .post('/api/v1/auth/signup')
+        .send(user),
+      request(app)
+        .post('/api/v1/auth/signup')
+        .send(user)
     ])
       .then(([reviewer, reviewee]) => {
         return request(app)
           .post('/api/v1/reviews')
           .send({
-            reviewer: reviewer._id,
-            reviewee: reviewee._id,
+            reviewer: reviewer.body.user._id,
+            reviewee: reviewee.body.user._id,
             reviewText: 'I am in love with this person',
             good: true
           })
+          .set('Authorization', `Bearer ${reviewer.body.token}`)
           .then(createdReview => {
             return request(app)
               .delete(`/api/v1/reviews/${createdReview.body._id}`)
+              .set('Authorization', `Bearer ${reviewer.body.token}`)
               .then(res => {
                 expect(res.body).toEqual({ _id: expect.any(String) });
               });
