@@ -1,7 +1,6 @@
 require('dotenv').config();
 const request = require('supertest');
 const app = require('../../lib/app');
-const User = require('../../lib/models/User');
 const mongoose = require('mongoose');
 
 describe('review routes', () => {
