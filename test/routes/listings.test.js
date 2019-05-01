@@ -210,6 +210,7 @@ describe('listings routes', () => {
       });
   });
 
+
   it('gets the listings of a single user', () => {
     return request(app)
       .post('/api/v1/auth/signup')
@@ -297,5 +298,5 @@ describe('listings routes', () => {
           });
       });
   });
-  
+
 });
