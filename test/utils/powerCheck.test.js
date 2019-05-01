@@ -5,7 +5,7 @@ const powerCheck = require('../../lib/utils/powerCheck');
 const User = require('../../lib/models/User');
 
 
-describe.skip('archive old listings', () => {
+describe('archive old listings', () => {
   beforeAll(() => {
     return mongoose.connect('mongodb://localhost:27017/napple', {
       useCreateIndex: true,
@@ -27,9 +27,8 @@ describe.skip('archive old listings', () => {
       .then(() => {
         return powerCheck()
           .then(() => {
-            User
-              .find()
-              .then(users => console.log(users));
+            return User
+              .find();
           });
       });
   });
