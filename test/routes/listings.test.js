@@ -299,7 +299,7 @@ describe('listings routes', () => {
       });
   });
 
-  it('returns listings 10 miles from any zipcode', () => {
+  it('returns listings n miles from any zipcode', () => {
     return request(app)
       .post('/api/v1/auth/signup')
       .send(user)
