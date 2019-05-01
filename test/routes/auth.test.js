@@ -40,7 +40,8 @@ describe('auth routes', () => {
             _id: expect.any(String),
             email: 'feet@shoes.com',
             location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
-            role: 'User'
+            role: 'User',
+            powerUser: false
           }, token: expect.any(String)
         });
       });
@@ -60,6 +61,7 @@ describe('auth routes', () => {
                 username: 'wookie',
                 _id: expect.any(String),
                 email: 'feet@shoes.com',
+                powerUser: false,
                 location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
                 role: 'User'
               }, token: expect.any(String)
@@ -82,7 +84,8 @@ describe('auth routes', () => {
               email: 'poop@poop.com', 
               location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
               username: 'wookie',
-              role: 'User'
+              role: 'User',
+              powerUser: false
             });
           });
       });
