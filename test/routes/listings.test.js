@@ -2,7 +2,8 @@ require('dotenv').config();
 const request = require('supertest');
 const app = require('../../lib/app');
 const mongoose = require('mongoose');
-
+const seedData = require('../utils/seed-data');
+const Listing = require('../../lib/models/Listing');
 
 describe('listings routes', () => {
 
@@ -296,6 +297,14 @@ describe('listings routes', () => {
                 ]);
               });
           });
+      });
+  });
+  it('obtains all listings by zipcode', () => {
+    return seedData()
+      .then(() => {
+        return Listing
+          .findOne();
+        // .then(listing => console.log(listing));
       });
   });
 
