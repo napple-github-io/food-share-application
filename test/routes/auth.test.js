@@ -24,7 +24,6 @@ describe('auth routes', () => {
   const user = {
     username: 'wookie',
     password: 'goobers',
-    role: 'User',
     email: 'feet@shoes.com',
     location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' }
   };
@@ -113,5 +112,24 @@ describe('auth routes', () => {
             expect(result.body[0].count).toBeGreaterThanOrEqual(result.body[2].count);
           });
       });      
+  });
+
+  it('gets another user by ID', () => {
+    return Promise.all([
+      request(app)
+        .post('/api/v1/auth/signup')
+        .send(user),
+      request(app)
+        .post('/api/v1/auth/signup')
+        .send(user)
+    ])
+      .then(([userOther, userMe]) => {
+        return request(app)
+          .get(`/api/v1/auth/usersearch/${userOther.body.user._id}`)
+          .set('Authorization', `Bearer ${userMe.body.token}`)
+          .then(res => {
+            expect(res.body._id).toEqual(userOther.body.user._id);
+          });
+      });
   });
 });

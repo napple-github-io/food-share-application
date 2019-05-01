@@ -127,4 +127,36 @@ describe('review routes', () => {
           });
       });
   });
+
+  it('shows all reviews of a specific user', () => {
+    return Promise.all([
+      request(app)
+        .post('/api/v1/auth/signup')
+        .send(user),
+      request(app)
+        .post('/api/v1/auth/signup')
+        .send(user)
+    ])
+      .then(([reviewer, reviewee]) => {
+        return request(app)
+          .post('/api/v1/reviews')
+          .send({
+            reviewer: reviewer.body.user._id,
+            reviewee: reviewee.body.user._id,
+            reviewText: 'I am in love with this person',
+            good: true
+          })
+          .set('Authorization', `Bearer ${reviewer.body.token}`)
+          .then(createdReview => {
+            return request(app)
+              .get(`/api/v1/reviews/user/${createdReview.body.reviewee}`)
+              .then(res => {
+                expect(res.body[0].reviewee).toEqual(createdReview.body.reviewee);
+              });
+          });
+      });
+  });
+  it('display a user rating', () => {
+
+  });
 });
