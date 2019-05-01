@@ -2,7 +2,7 @@ require('dotenv').config();
 require('./lib/utils/connect')();
 const app = require('./lib/app');
 const archive = require('./lib/utils/archive');
-const archive = require('./lib/utils/powerCheck');
+const powerCheck = require('./lib/utils/powerCheck');
 const PORT = process.env.PORT || 8889;
 
 

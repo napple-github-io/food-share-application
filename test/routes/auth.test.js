@@ -24,7 +24,6 @@ describe('auth routes', () => {
   const user = {
     username: 'wookie',
     password: 'goobers',
-    role: 'User',
     email: 'feet@shoes.com',
     location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' }
   };

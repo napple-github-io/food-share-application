@@ -299,13 +299,20 @@ describe('listings routes', () => {
           });
       });
   });
-  it('obtains all listings by zipcode', () => {
-    return seedData()
-      .then(() => {
-        return Listing
-          .findOne();
-        // .then(listing => console.log(listing));
-      });
-  });
+  // it('obtains all listings by zipcode', () => {
+  //   return seedData()
+  //     .then(() => {
+  //       return Listing
+  //         .findOne()
+  //         .then(foundListing => {
+  //           console.log(foundListing.location.zip);
+  //           return request(app)
+  //             .get(`/api/v1/listings/zip/${foundListing.location.zip}`)
+  //             .then(zipResponse => {
+  //               expect(zipResponse).toEqual('');
+  //             });
+  //         });
+  //     });
+  // });
 
 });
