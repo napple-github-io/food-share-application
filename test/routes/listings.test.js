@@ -267,7 +267,7 @@ describe('listings routes', () => {
       });
   });
 
-  it('returns listings within a certain radius', () => {
+  it('returns listings 10 miles from user', () => {
     return request(app)
       .post('/api/v1/auth/signup')
       .send(user)
@@ -286,6 +286,44 @@ describe('listings routes', () => {
             return request(app)
               .get('/api/v1/listings/close')
               .set('Authorization', `Bearer ${createdUser.body.token}`)
+              .then(res => {
+                expect(res.body).toEqual([
+                  { __v: 0,
+                    _id: expect.any(String),
+                    archived: false,
+                    category: 'produce',
+                    dietary: { dairy: true, gluten: true },
+                    expiration: expect.any(String),
+                    location: { 'address': '915 SE 35th Ave., Portland, Or', 'zip': '97214' },
+                    postedDate: expect.any(String),
+                    title: 'carrots',
+                    user: expect.any(String)
+                  }
+                ]);
+              });
+          });
+      });
+  });
+
+  it('returns listings n miles from any zipcode', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .then(createdUser => {
+        return request(app)
+          .post('/api/v1/listings')
+          .send({
+            title: 'carrots',
+            user: createdUser.body.user._id,
+            location: { address: '915 SE 35th Ave., Portland, Or', zip: '97214' },
+            category: 'produce',
+            dietary: { dairy: true, gluten: true }
+          })
+          .set('Authorization', `Bearer ${createdUser.body.token}`)
+          .then(() => {
+            const req = { body: { zip: 97215, searchRadius: 5 } };
+            return request(app)
+              .get(`/api/v1/listings/close/${req.body.zip}/${req.body.searchRadius}`)
               .then(res => {
                 expect(res.body).toEqual([
                   { __v: 0,
