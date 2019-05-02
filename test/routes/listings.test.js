@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const seedData = require('../utils/seed-data');
 
 describe('listings routes', () => {
-
   beforeAll(() => {
     return mongoose.connect('mongodb://localhost:27017/napple', {
       useCreateIndex: true,
@@ -52,7 +51,8 @@ describe('listings routes', () => {
             expect(posted.body).toEqual({
               title: 'carrots',
               user: expect.any(String),
-              location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },              category: 'produce',
+              location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
+              category: 'produce',
               dietary: { dairy: true, gluten: true },
               _id: expect.any(String),
               postedDate: expect.any(String),
@@ -74,7 +74,8 @@ describe('listings routes', () => {
           .send({
             title: 'carrots',
             user: createdUser.body.user._id,
-            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },            category: 'produce',
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
+            category: 'produce',
             dietary: { dairy: true, gluten: true }
           })
           .set('Authorization', `Bearer ${createdUser.body.token}`)
@@ -99,7 +100,8 @@ describe('listings routes', () => {
           .send({
             title: 'carrots',
             user: createdUser.body.user._id,
-            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },            category: 'produce',
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
+            category: 'produce',
             dietary: { dairy: true, gluten: true }
           })
           .set('Authorization', `Bearer ${createdUser.body.token}`)
@@ -133,7 +135,8 @@ describe('listings routes', () => {
           .send({
             title: 'carrots',
             user: createdUser.body.user._id,
-            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },            category: 'produce',
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
+            category: 'produce',
             dietary: { dairy: true, gluten: true }
           })
           .set('Authorization', `Bearer ${createdUser.body.token}`)
@@ -168,7 +171,8 @@ describe('listings routes', () => {
           .send({
             title: 'carrots',
             user: createdUser.body.user._id,
-            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },            category: 'produce',
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
+            category: 'produce',
             dietary: { dairy: true, gluten: true }
           })
           .set('Authorization', `Bearer ${createdUser.body.token}`)
@@ -194,7 +198,8 @@ describe('listings routes', () => {
           .send({
             title: 'carrots',
             user: createdUser.body.user._id,
-            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },            category: 'produce',
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
+            category: 'produce',
             dietary: { dairy: true, gluten: true }
           })
           .set('Authorization', `Bearer ${createdUser.body.token}`)
@@ -210,7 +215,6 @@ describe('listings routes', () => {
       });
   });
 
-
   it('gets the listings of a single user', () => {
     return request(app)
       .post('/api/v1/auth/signup')
@@ -221,7 +225,8 @@ describe('listings routes', () => {
           .send({
             title: 'carrots',
             user: createdUser.body.user._id,
-            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },            category: 'produce',
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
+            category: 'produce',
             dietary: { dairy: true, gluten: true }
           })
           .set('Authorization', `Bearer ${createdUser.body.token}`)
@@ -246,7 +251,8 @@ describe('listings routes', () => {
           .send({
             title: 'carrots',
             user: createdUser.body.user._id,
-            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97200' },            category: 'produce',
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97200' },
+            category: 'produce',
             dietary: { dairy: true, gluten: true }
           })
           .set('Authorization', `Bearer ${createdUser.body.token}`)
@@ -347,5 +353,29 @@ describe('listings routes', () => {
           });
       });
   });
+  it('searches title for keywords', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .then(createdUser => {
+        return request(app)
+          .post('/api/v1/listings')
+          .send({
+            title: 'carrots and beans',
+            user: createdUser.body.user._id,
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
+            category: 'produce',
+            dietary: { dairy: true, gluten: true }
+          })
+          .set('Authorization', `Bearer ${createdUser.body.token}`)
+          .then(() => {
+            return request(app)
+              .get('/api/v1/listings/keyword/carrots')
+              .then(found => {
+                expect(found.body[0].title).toEqual('carrots and beans');
+              });
+          });
+          
+      });
+  });
 });
-

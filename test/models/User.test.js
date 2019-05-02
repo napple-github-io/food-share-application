@@ -4,7 +4,6 @@ const User = require('../../lib/models/User');
 const { untokenize } = require('../../lib/utils/token');
 
 describe('User model', () =>{
-
   beforeAll(() => {
     return mongoose.connect('mongodb://localhost:27017/napple', {
       useCreateIndex: true,
@@ -51,7 +50,6 @@ describe('User model', () =>{
       email: 'feet@shoes.com',
       location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
       role: 'User',
-
     })
       .then(created => {
         return created.compare('goobers');

@@ -39,7 +39,19 @@ module.exports = ({
           zip: chance.zip()
         },
         archived: false,
-        category: chance.pickone(['canned goods', 'produce', 'dairy', 'eggs', 'meat', 'seafood', 'cooked foods', 'garden', 'pantry staples', 'herbs', 'boxed goods', 'spices', 'beverages']),
+        category: chance.pickone(['canned goods',
+          'produce',
+          'dairy',
+          'eggs',
+          'meat',
+          'seafood',
+          'cooked foods',
+          'garden',
+          'pantry staples',
+          'herbs',
+          'boxed goods',
+          'spices',
+          'beverages']),
         dietary: {
           dairy: chance.bool({ likelihood: 20 }),
           gluten: chance.bool({ likelihood: 25 }),
@@ -56,5 +68,4 @@ module.exports = ({
         Review.create(reviews)
       ]);
     });
-    
 };
