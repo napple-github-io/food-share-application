@@ -267,7 +267,7 @@ describe('listings routes', () => {
       });
   });
 
-  it('returns listings 10 miles from user', () => {
+  it('returns listings n miles from user', () => {
     return request(app)
       .post('/api/v1/auth/signup')
       .send(user)
@@ -284,7 +284,7 @@ describe('listings routes', () => {
           .set('Authorization', `Bearer ${createdUser.body.token}`)
           .then(() => {
             return request(app)
-              .get('/api/v1/listings/close')
+              .get('/api/v1/listings/close?radiusInMiles=10')
               .set('Authorization', `Bearer ${createdUser.body.token}`)
               .then(res => {
                 expect(res.body).toEqual([
@@ -323,7 +323,7 @@ describe('listings routes', () => {
           .then(() => {
             const req = { body: { zip: 97215, searchRadius: 5 } };
             return request(app)
-              .get(`/api/v1/listings/close/${req.body.zip}/${req.body.searchRadius}`)
+              .get(`/api/v1/listings/close/zip?zip=${req.body.zip}&radiusInMiles=${req.body.searchRadius}`)
               .then(res => {
                 expect(res.body).toEqual([
                   { __v: 0,
@@ -353,6 +353,7 @@ describe('listings routes', () => {
           });
       });
   });
+
   it('searches title for keywords', () => {
     return request(app)
       .post('/api/v1/auth/signup')
@@ -370,7 +371,33 @@ describe('listings routes', () => {
           .set('Authorization', `Bearer ${createdUser.body.token}`)
           .then(() => {
             return request(app)
-              .get('/api/v1/listings/keyword/carrots')
+              .get('/api/v1/listings/keyword?searchTerm=carrots')
+              .then(found => {
+                expect(found.body[0].title).toEqual('carrots and beans');
+              });
+          });
+          
+      });
+  });
+
+  it('searches title for keywords within n distance', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .then(createdUser => {
+        return request(app)
+          .post('/api/v1/listings')
+          .send({
+            title: 'carrots and beans',
+            user: createdUser.body.user._id,
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
+            category: 'produce',
+            dietary: { dairy: true, gluten: true }
+          })
+          .set('Authorization', `Bearer ${createdUser.body.token}`)
+          .then(() => {
+            return request(app)
+              .get('/api/v1/listings/keyword/close?searchTerm=carrots&zip=97214&radiusInMiles=5')
               .then(found => {
                 expect(found.body[0].title).toEqual('carrots and beans');
               });
