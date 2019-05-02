@@ -387,7 +387,7 @@ describe('listings routes', () => {
       });
   });
 
-  it.only('searches title for keywords within n distance', () => {
+  it('searches title for keywords within n distance', () => {
     return request(app)
       .post('/api/v1/auth/signup')
       .send(user)
