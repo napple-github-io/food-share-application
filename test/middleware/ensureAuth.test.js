@@ -14,7 +14,7 @@ describe('ensureAuth middleware', () => {
       expect(req.user).toEqual({ username: 'banana' });
       done();
     };
-
+    
     ensureAuth(req, res, next);
   });
 });

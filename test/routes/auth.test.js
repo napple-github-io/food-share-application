@@ -77,7 +77,10 @@ describe('auth routes', () => {
         return request(app)
           .patch(`/api/v1/auth/${createdUser.body.user._id}`)
           .set('Authorization', `Bearer ${createdUser.body.token}`)
-          .send({ email: 'poop@poop.com', password: 'newpw', location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' } })
+          .send({
+            email: 'poop@poop.com',
+            password: 'newpw',
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' } })
           .then(res => {
             expect(res.body).toEqual({
               email: 'poop@poop.com', 
