@@ -409,8 +409,57 @@ describe('listings routes', () => {
                 expect(res.body.matches[0].title).toEqual('carrots and beans');
                 expect(res.body.url).toEqual(expect.any(String));
               });
-          });
-          
+          });   
+      });
+  });
+
+  it('searches by dietary restriction', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .then(createdUser => {
+        return request(app)
+          .post('/api/v1/listings')
+          .send({
+            title: 'carrots and beans',
+            user: createdUser.body.user._id,
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
+            category: 'produce',
+            dietary: { dairy: true, gluten: true, nut: false }
+          })
+          .set('Authorization', `Bearer ${createdUser.body.token}`)
+          .then(() => {
+            return request(app)
+              .get('/api/v1/listings/dietary?dairy=true&gluten=true')
+              .then(res => {
+                expect(res.body[0].dietary.gluten).toEqual(true);
+              });
+          });   
+      });
+  });
+  
+  it('searches by dietary restriction in a specific zip', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .then(createdUser => {
+        return request(app)
+          .post('/api/v1/listings')
+          .send({
+            title: 'carrots and beans',
+            user: createdUser.body.user._id,
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97201' },
+            category: 'produce',
+            dietary: { dairy: true, gluten: true, nut: false }
+          })
+          .set('Authorization', `Bearer ${createdUser.body.token}`)
+          .then(() => {
+            return request(app)
+              .get('/api/v1/listings/dietary/close?dairy=true&gluten=true&zip=97201&radiusInMiles=5')
+              .then(res => {
+                expect(res.body[0].dietary.gluten).toEqual(true);
+              });
+          });   
       });
   });
 });
