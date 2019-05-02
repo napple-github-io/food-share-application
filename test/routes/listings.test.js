@@ -353,4 +353,29 @@ describe('listings routes', () => {
           });
       });
   });
+  it('searches title for keywords', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .then(createdUser => {
+        return request(app)
+          .post('/api/v1/listings')
+          .send({
+            title: 'carrots and beans',
+            user: createdUser.body.user._id,
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
+            category: 'produce',
+            dietary: { dairy: true, gluten: true }
+          })
+          .set('Authorization', `Bearer ${createdUser.body.token}`)
+          .then(() => {
+            return request(app)
+              .get('/api/v1/listings/keyword/carrots')
+              .then(found => {
+                expect(found.body[0].title).toEqual('carrots and beans');
+              });
+          });
+          
+      });
+  });
 });
