@@ -32,18 +32,6 @@ describe('listings routes', () => {
     }
   };
 
-  const admin = {
-    username: 'wookie',
-    password: 'goobers',
-    role: 'User',
-    email: 'feet@shoes.com',
-    location: {
-      address: '1919 NW Quimby St., Portland, Or',
-      zip: '97209'
-    },
-    role: 'Admin'
-  };
-
   it('creates a listing after user', () => {
     return request(app)
       .post('/api/v1/auth/signup')
@@ -386,27 +374,7 @@ describe('listings routes', () => {
               .then(found => {
                 expect(found.body[0].title).toEqual('carrots and beans');
               });
-          });
-          
+          });   
       });
   });
-
-  // it('populates the database', () => {
-  //   return request(app)
-  //     .post('/api/v1/auth/signup')
-  //     .send(admin)
-  //     .then(createdAdmin => {
-  //       return request(app)
-  //         .get('/api/v1/listings/admin/populate')
-  //         .set('Authorization', `Bearer ${createdAdmin.body.token}`)
-  //         .then(() => {
-  //           return request(app)
-  //             .get('/api/v1/listings')
-  //             .set('Authorization', `Bearer ${createdAdmin.body.token}`)
-  //             .then(res => {
-  //               expect(res.body.length).toHaveLength(0);
-  //             });
-  //         });
-  //     });
-  // });
 });
