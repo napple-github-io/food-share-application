@@ -2,7 +2,7 @@ require('dotenv').config();
 const request = require('supertest');
 const app = require('../../lib/app');
 const mongoose = require('mongoose');
-
+const seedData = require('../utils/seed-data');
 
 describe('listings routes', () => {
 
@@ -337,4 +337,15 @@ describe('listings routes', () => {
       });
   });
 
+  it('displays hotzips', () => {
+    return seedData()
+      .then(() => {
+        return request(app)
+          .get('/api/v1/listings/hotzips')
+          .then(zipResponse => {
+            expect(zipResponse.body).toEqual(expect.any(Array));
+          });
+      });
+  });
 });
+
