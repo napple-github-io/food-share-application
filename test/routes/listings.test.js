@@ -287,8 +287,11 @@ describe('listings routes', () => {
               .get('/api/v1/listings/close?radiusInMiles=10')
               .set('Authorization', `Bearer ${createdUser.body.token}`)
               .then(res => {
-                expect(res.body).toEqual([
-                  { __v: 0,
+                expect(res.body).toEqual({ 
+                  url: expect.any(String),
+                  matches: 
+                  [{
+                    __v: 0,
                     _id: expect.any(String),
                     archived: false,
                     category: 'produce',
@@ -298,12 +301,13 @@ describe('listings routes', () => {
                     postedDate: expect.any(String),
                     title: 'carrots',
                     user: expect.any(String)
-                  }
-                ]);
+                  }]
+                });
               });
           });
       });
   });
+
 
   it('returns listings n miles from any zipcode', () => {
     return request(app)
@@ -325,8 +329,11 @@ describe('listings routes', () => {
             return request(app)
               .get(`/api/v1/listings/close/zip?zip=${req.body.zip}&radiusInMiles=${req.body.searchRadius}`)
               .then(res => {
-                expect(res.body).toEqual([
-                  { __v: 0,
+                expect(res.body).toEqual({ 
+                  url: expect.any(String),
+                  matches: 
+                  [{
+                    __v: 0,
                     _id: expect.any(String),
                     archived: false,
                     category: 'produce',
@@ -336,8 +343,8 @@ describe('listings routes', () => {
                     postedDate: expect.any(String),
                     title: 'carrots',
                     user: expect.any(String)
-                  }
-                ]);
+                  }]
+                });
               });
           });
       });
@@ -398,8 +405,9 @@ describe('listings routes', () => {
           .then(() => {
             return request(app)
               .get('/api/v1/listings/keyword/close?searchTerm=carrots&zip=97214&radiusInMiles=5')
-              .then(found => {
-                expect(found.body[0].title).toEqual('carrots and beans');
+              .then(res => {
+                expect(res.body.matches[0].title).toEqual('carrots and beans');
+                expect(res.body.url).toEqual(expect.any(String));
               });
           });   
       });
