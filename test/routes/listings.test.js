@@ -387,7 +387,7 @@ describe('listings routes', () => {
       });
   });
 
-  it('searches title for keywords within n distance', () => {
+  it.only('searches title for keywords within n distance', () => {
     return request(app)
       .post('/api/v1/auth/signup')
       .send(user)
@@ -405,8 +405,9 @@ describe('listings routes', () => {
           .then(() => {
             return request(app)
               .get('/api/v1/listings/keyword/close?searchTerm=carrots&zip=97214&radiusInMiles=5')
-              .then(found => {
-                expect(found.body[0].title).toEqual('carrots and beans');
+              .then(res => {
+                expect(res.body.matches[0].title).toEqual('carrots and beans');
+                expect(res.body.url).toEqual(expect.any(String));
               });
           });
           
