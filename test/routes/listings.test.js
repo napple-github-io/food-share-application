@@ -267,7 +267,7 @@ describe('listings routes', () => {
       });
   });
 
-  it.only('returns listings n miles from user', () => {
+  it('returns listings n miles from user', () => {
     return request(app)
       .post('/api/v1/auth/signup')
       .send(user)
@@ -329,8 +329,11 @@ describe('listings routes', () => {
             return request(app)
               .get(`/api/v1/listings/close/zip?zip=${req.body.zip}&radiusInMiles=${req.body.searchRadius}`)
               .then(res => {
-                expect(res.body).toEqual([
-                  { __v: 0,
+                expect(res.body).toEqual({ 
+                  url: expect.any(String),
+                  matches: 
+                  [{
+                    __v: 0,
                     _id: expect.any(String),
                     archived: false,
                     category: 'produce',
@@ -340,8 +343,8 @@ describe('listings routes', () => {
                     postedDate: expect.any(String),
                     title: 'carrots',
                     user: expect.any(String)
-                  }
-                ]);
+                  }]
+                });
               });
           });
       });
