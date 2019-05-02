@@ -28,6 +28,17 @@ describe('auth routes', () => {
     location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' }
   };
 
+  const admin = {
+    username: 'wookie',
+    password: 'goobers',
+    role: 'Admin',
+    email: 'feet@shoes.com',
+    location: {
+      address: '1919 NW Quimby St., Portland, Or',
+      zip: '97209'
+    },
+  };
+
   it('signs up a user', () => {
     return request(app)
       .post('/api/v1/auth/signup')
@@ -40,6 +51,24 @@ describe('auth routes', () => {
             email: 'feet@shoes.com',
             location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
             role: 'User',
+            powerUser: false
+          }, token: expect.any(String)
+        });
+      });
+  });
+
+  it('signs up an admin', () => {
+    return request(app)
+      .post('/api/v1/auth/admin/signup')
+      .send(admin)
+      .then(createdUser => {
+        expect(createdUser.body).toEqual({
+          user: {
+            username: 'wookie',
+            _id: expect.any(String),
+            email: 'feet@shoes.com',
+            location: { address: '1919 NW Quimby St., Portland, Or', zip: '97209' },
+            role: 'Admin',
             powerUser: false
           }, token: expect.any(String)
         });

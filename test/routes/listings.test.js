@@ -401,8 +401,7 @@ describe('listings routes', () => {
               .then(found => {
                 expect(found.body[0].title).toEqual('carrots and beans');
               });
-          });
-          
+          });   
       });
   });
 });
